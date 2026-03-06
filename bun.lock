@@ -19,16 +19,6 @@
         "typescript": "^5",
       },
     },
-    "apps/app": {
-      "name": "app",
-      "version": "1.0.50",
-      "dependencies": {
-        "elysia": "latest",
-      },
-      "devDependencies": {
-        "bun-types": "latest",
-      },
-    },
     "apps/dashboard-frontend": {
       "name": "bun-react-template",
       "version": "0.1.0",
@@ -53,12 +43,13 @@
       },
     },
     "apps/primary-backend": {
-      "name": "primary-backend",
-      "devDependencies": {
-        "@types/bun": "latest",
+      "name": "app",
+      "version": "1.0.50",
+      "dependencies": {
+        "elysia": "latest",
       },
-      "peerDependencies": {
-        "typescript": "^5",
+      "devDependencies": {
+        "bun-types": "latest",
       },
     },
     "packages/db": {
@@ -341,7 +332,7 @@
 
     "api-backend": ["api-backend@workspace:apps/api-backend"],
 
-    "app": ["app@workspace:apps/app"],
+    "app": ["app@workspace:apps/primary-backend"],
 
     "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
 
@@ -792,8 +783,6 @@
     "prelude-ls": ["prelude-ls@1.2.1", "", {}, "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="],
 
     "prettier": ["prettier@3.8.1", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg=="],
-
-    "primary-backend": ["primary-backend@workspace:apps/primary-backend"],
 
     "prisma": ["prisma@7.4.2", "", { "dependencies": { "@prisma/config": "7.4.2", "@prisma/dev": "0.20.0", "@prisma/engines": "7.4.2", "@prisma/studio-core": "0.13.1", "mysql2": "3.15.3", "postgres": "3.4.7" }, "peerDependencies": { "better-sqlite3": ">=9.0.0", "typescript": ">=5.4.0" }, "optionalPeers": ["better-sqlite3", "typescript"], "bin": { "prisma": "build/index.js" } }, "sha512-2bP8Ruww3Q95Z2eH4Yqh4KAENRsj/SxbdknIVBfd6DmjPwmpsC4OVFMLOeHt6tM3Amh8ebjvstrUz3V/hOe1dA=="],
 
