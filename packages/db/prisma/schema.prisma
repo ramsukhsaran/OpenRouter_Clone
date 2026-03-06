@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+
+  credits            Int    @default(0)
+ 
+  apiKeys            ApiKey[]  
+  onrampTransactions OnrampTransaction[]
+  conversations      Conversation[]
+}
+
+model ApiKey {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  name     String
+  apiKey   String @unique
+  disabled Boolean @default(false)
+  deleted  Boolean @default(false)
+
+  user          User           @relation(fields: [userId], references: [id])
+  conversations Conversation[]
+}
+
+
+model OnrampTransaction {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  amount Int
+  status String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Company {
+  id      Int     @id @default(autoincrement())
+  name    String
+  website String
+
+  models Model[]
+}
+
+model Model {
+  id        Int    @id @default(autoincrement())
+  name      String  // GPT-5 by Openai
+  slug      String  //  openai/gpt-5
+  companyId Int
+
+  company Company @relation(fields: [companyId], references: [id])
+  modelProviderMappings ModelProviderMapping[]
+}
+
+model Provider {
+  id      Int    @id @default(autoincrement())
+  name    String
+  website String
+
+  modelProviderMappings ModelProviderMapping[]
+}
+
+model ModelProviderMapping {
+  id              Int   @id @default(autoincrement())
+  modelId         Int
+  providerId      Int
+  inputTokenCost  Int
+  outputTokenCost Int       // cost per 1Mn token * 1000
+
+  model     Model    @relation(fields: [modelId], references: [id])
+  provider  Provider @relation(fields: [providerId], references: [id])
+
+  conversations Conversation[]
+}
+
+model Conversation {
+  id                     Int    @id @default(autoincrement())
+  userId                 Int
+  apiKeyId               Int
+  modelProviderMappingId Int
+
+  input            String
+  output           String
+  inputTokenCount  Int
+  outputTokenCount Int
+
+  user      User                 @relation(fields: [userId], references: [id])
+  apiKey    ApiKey               @relation(fields: [apiKeyId], references: [id])
+  mapping   ModelProviderMapping @relation(fields: [modelProviderMappingId], references: [id])
+}
