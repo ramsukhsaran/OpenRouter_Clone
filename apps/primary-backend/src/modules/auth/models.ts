@@ -1,5 +1,5 @@
 // Model define the data structure and validation for the request and response
-import { zstdCompress } from 'bun'
+
 import { t} from 'elysia'
 
 export namespace AuthModel {
