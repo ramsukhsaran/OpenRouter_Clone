@@ -1,4 +1,4 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { jwt } from "@elysiajs/jwt";
 import { ApiKeyModel } from "./models";
 import {ApiKeyService} from "./service"
@@ -30,6 +30,19 @@ export const app = new Elysia({ prefix: "api-keys" })
             200: ApiKeyModel.createApiKeyResponse
         }
     })
-  .get("/", () => {})
+   .get("/", async ({ userId }) => {
+        const apiKeys = await ApiKeyService.getApiKeys(Number(userId));
+        // Map DB fields to response schema fields
+        return apiKeys.map((key: any) => ({
+            name: key.name,
+            apiKey: key.apiKey,
+            lastUsed: key.lastUsed ? key.lastUsed.toISOString() : "",
+            creditConsumed: key.creditConsumed ?? 0
+        }))
+    }, {
+        response: {
+            200: t.Array(ApiKeyModel.getApiKeysResponseSchema)
+        }
+    })
   .post("/disable", () => {})
   .delete("/:id", () => {});

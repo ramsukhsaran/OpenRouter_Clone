@@ -31,4 +31,22 @@ export abstract class ApiKeyService {
             apiKey
         }
     }
+
+     static async getApiKeys(userId: number) {
+        const apiKeys = await prisma.apiKey.findMany({
+            where: {
+                userId: userId,
+                deleted: false
+            }
+        })
+
+        return apiKeys.map(apiKey => ({
+            id: apiKey.id.toString(),
+            apiKey: apiKey.apiKey,
+            name: apiKey.name,
+            creditConsumed: apiKey.creditConsumed,
+            lastUsed: apiKey.lastUsed,
+            disabled: apiKey.disabled
+        }))
+    }
 }
