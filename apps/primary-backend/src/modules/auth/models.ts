@@ -10,13 +10,15 @@ export namespace AuthModel {
     export type SignInSchema = typeof signInSchema.static
 
   export  const signInResponseSchema = t.Object({
-       token: t.String(),
+        message:t.Literal("SignIn successful"),
     })
-    export const signInfailedResponseSchema = t.Object({
-        message:t.Literal("Error in signIn")
+    
+    export const signInFailedResponseSchema = t.Object({
+        message:t.Literal("Invalid email or password")
     })
+    
     export type SignInResponseSchema = typeof signInResponseSchema.static
-    export type SignInfailedResponseSchema = typeof signInfailedResponseSchema.static
+    export type SignInFailedResponseSchema = typeof signInFailedResponseSchema.static
 
    export const signUpSchema = t.Object({
         email: t.String(),
